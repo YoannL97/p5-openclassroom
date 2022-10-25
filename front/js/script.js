@@ -11,7 +11,7 @@ function addproducts(produits) {
         items.appendChild(link)
 
         let id = produits[element]._id
-        link.href = "./html/product.html?id=" + id
+        link.href = "./product.html?id=" + id
         
         let articleBox = document.createElement("article")
         link.appendChild(articleBox)
