@@ -67,34 +67,48 @@ if (color === "" || color == "null" | quantite == "0" | quantite == "null")
     alert ("veuillez choisir une couleur et une quantité")
 
 
-panier = {
+let panier = {
     id: id,
     couleur: color,
     quantite: quantite,  
 }
 
 
+localStorage.setItem('panier', JSON.stringify([panier]))
 
-
-
-localStorage.setItem( 'panier', JSON.stringify(panier)) 
-
-if (localStorage.getItem('panier') == "null") {
-    localStorage.setItem('panier', '[]' )
-}
 
 let cart = JSON.parse(localStorage.getItem('panier'))
 cart.push(panier)
+localstorage.setItem('panier', JSON.stringify(cart)) 
 
-localStorage.setItem('panier', JSON.stringify(cart))
 
+/*if (localstorage == 'null') {
+
+    localstorage.setItem('panier', JSON.stringify([panier])) 
+}
+else {
+    let cart = localStorage.getItem('panier'))
+    cart.push(panier)
+    localstorage.setItem('panier', JSON.stringify(cart)) 
+
+}*/
+
+
+
+
+
+
+
+
+
+console.log(cart);
 
 })
 }
 
 
 
-/*let cart = JSON.parse(localStorage.getItem('panier'))
+/*
 cart = Array()
 cart.push(panier)    
 if (panier.id == id )
