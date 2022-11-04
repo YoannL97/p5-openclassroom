@@ -1,6 +1,6 @@
 
-function displayCartLine(toto) {
-    console.log(toto)
+function displayCartLine(produit) {
+
     let section = document.getElementById("cart__items")
     let article = document.createElement("article")
     article.className = "cart__item"
@@ -13,7 +13,7 @@ function displayCartLine(toto) {
 
     let imgImage = document.createElement("img")
     divImage.appendChild(imgImage)
-    imgImage.src = toto.imageUrl
+    imgImage.src = produit.imageUrl
 
 
     let itemsContentClass = document.createElement("div")
@@ -28,7 +28,7 @@ function displayCartLine(toto) {
     itemsContentDescription.appendChild(titreH2)
 
     let colorP = document.createElement("p")
-    colorP.textContent = toto.couleur
+    colorP.textContent = produit.couleur
     itemsContentDescription.appendChild(colorP)
 
     let priceP = document.createElement("p")
@@ -44,27 +44,39 @@ function displayCartLine(toto) {
 
     let quantityP = document.createElement("p")
     contentQuantity.appendChild(quantityP)
+
+//    let inputQty = document.createElement("input")
+    //type text, ajouter la qty en valeur dans le champ
+//    inputQty.addEventListener('change', function () {
+        // vérifier qu'on tape pas plus de 100
+        //mettre à jour le panier => appel d'une fonction setPanier(avec id, couleur, qty)
+//    })
 }
 
+//function setPanier(id, couleur, qty) {
+    //mettre à jour le contenu
+    //lecture du panier => appell d'un fonction
+//}
 
+//function readPanier() {
+    let itemsList = JSON.parse(localStorage.getItem('panier'))
 
-let itemsList = JSON.parse(localStorage.getItem('panier'))
+    for (let produit of itemsList) {
+    //colorP.textContent = produit.couleur
+    console.log(produit.id)
+    //displayCartLine(produit)
+    fetch (`http://localhost:3000/api/products/${produit.id}`)
+    .then ((response) => response.json())
+    .then ((data) => {
+        data['couleur'] = produit.couleur
+        data['qty'] = produit.quantité
+        displayCartLine(data)})
+        //ajouter au qty total et prix total du panier
+    .catch((error) => {
+        console.log(error)})
 
-for (let produit of itemsList) {
-//colorP.textContent = produit.couleur
-console.log(produit.id)
-//displayCartLine(produit)
-fetch (`http://localhost:3000/api/products/${produit.id}`)
-.then ((response) => response.json())
-.then ((data) => {
-    data['couleur'] = produit.couleur
-    data['qty'] = produit.quantité
-    displayCartLine(data)})
-.catch((error) => {
-    console.log(error)})
-
-}
-
+    }
+//}
 
 
 
