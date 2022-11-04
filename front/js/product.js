@@ -60,7 +60,7 @@ function boutonEvent() {
         let color = document.getElementById("colors").value
         let quantite = document.getElementById("quantity").value
 
-        if (color === "" || color == "null" | quantite == "0" | quantite == "null") {
+        if (color === "" || color == "null" | quantite == 0 | quantite == null) {
             alert ("veuillez choisir une couleur et une quantité")
         }
         else {
@@ -77,7 +77,7 @@ function boutonEvent() {
 function getPanier() {
     let cart = localStorage.getItem('panier')
 
-    if (cart == 'null') {
+    if (cart == undefined) {
         return [];
     }
     else  {
@@ -88,12 +88,45 @@ function getPanier() {
 
 
 function addPanier (cart) {
+
     let panier = getPanier();
-    if (panier.id )
     //verifier si l'article existe déjà dans le panier et vérifier s'il est à moins de 100 qty
+    let foundPanier = panier.find(p => p.id == cart.id & p.couleur == cart.couleur)
+
+    if (foundPanier != undefined) {
+       
+        foundPanier.quantite = cart.quantite
+        
+    }
+    else {
+        cart.quantite = cart.quantite
+        panier.push(cart)
+    }
+
     
-    panier.push(cart)
     localStorage.setItem('panier', JSON.stringify(panier))
+
+    
+    
+
+
+
+    
+    //let foundPanier = JSON.parse(localStorage.getItem('panier'))
+    /*panier.forEach (element => {
+        let nom = element.id;
+        let nombre = element.quantite
+        let couleur = element.couleur
+
+        
+    });
+    */
+    
+
+
+
+
+    
 }
 
 boutonEvent ()

@@ -25,6 +25,7 @@ function displayCartLine(produit) {
     itemsContentClass.appendChild(itemsContentDescription)
 
     let titreH2 = document.createElement("h2")
+    titreH2.textContent =  produit.name
     itemsContentDescription.appendChild(titreH2)
 
     let colorP = document.createElement("p")
@@ -32,6 +33,7 @@ function displayCartLine(produit) {
     itemsContentDescription.appendChild(colorP)
 
     let priceP = document.createElement("p")
+    priceP.textContent = produit.price + "€"
     itemsContentDescription.appendChild(priceP)
 
     let contentSetting = document.createElement("div")
@@ -43,7 +45,26 @@ function displayCartLine(produit) {
     contentSetting.appendChild(contentQuantity)
 
     let quantityP = document.createElement("p")
+    quantityP.textContent = produit.qty
     contentQuantity.appendChild(quantityP)
+
+    let inputNbr = document.createElement("input")
+    inputNbr.type = "number"
+    inputNbr.className = "itemQuantity"
+    inputNbr.min = "1"
+    inputNbr.max = "100"
+    contentQuantity.appendChild(inputNbr)
+
+
+    let contentDelete = document.createElement("div")
+    contentDelete.className = "cart__item__content__settings__delete"
+    contentSetting.appendChild(contentDelete)
+
+    let deleteItem = document.createElement("p")
+    deleteItem.className = "deleteItem"
+    deleteItem.textContent = "supprimer"
+    contentDelete.appendChild(deleteItem)
+
 
 //    let inputQty = document.createElement("input")
     //type text, ajouter la qty en valeur dans le champ
@@ -69,13 +90,19 @@ function displayCartLine(produit) {
     .then ((response) => response.json())
     .then ((data) => {
         data['couleur'] = produit.couleur
-        data['qty'] = produit.quantité
-        displayCartLine(data)})
+        data['qty'] = produit.quantite
+
+        displayCartLine(data)
+        console.log(data);
+    
+    })
+        
         //ajouter au qty total et prix total du panier
     .catch((error) => {
         console.log(error)})
 
     }
+   
 //}
 
 
