@@ -53,109 +53,47 @@ for (let color_id in canape.colors) {
 
 //  bouton
 
+function boutonEvent() {
+    let bouton = document.querySelector("#addToCart")
+    bouton.addEventListener ("click", (e) => {
 
+        let color = document.getElementById("colors").value
+        let quantite = document.getElementById("quantity").value
 
-function boutonEvent () {
-
-let bouton = document.querySelector("#addToCart")
-bouton.addEventListener ("click", (e) => {
-
-let color = document.getElementById("colors").value
-let quantite = document.getElementById("quantity").value
-
-if (color === "" || color == "null" | quantite == "0" | quantite == "null")
-    alert ("veuillez choisir une couleur et une quantité")
-
-
-let panier = {
-    id: id,
-    couleur: color,
-    quantite: quantite,  
+        if (color === "" || color == "null" | quantite == "0" | quantite == "null") {
+            alert ("veuillez choisir une couleur et une quantité")
+        }
+        else {
+            let panier = {
+                id: id,
+                couleur: color,
+                quantite: quantite,  
+            }
+            addPanier(panier)
+        }
+    })
 }
 
+function getPanier() {
+    let cart = localStorage.getItem('panier')
 
-localStorage.setItem('panier', JSON.stringify([panier]))
-
-
-let cart = JSON.parse(localStorage.getItem('panier'))
-cart.push(panier)
-localstorage.setItem('panier', JSON.stringify(cart)) 
-
-
-/*if (localstorage == 'null') {
-
-    localstorage.setItem('panier', JSON.stringify([panier])) 
-}
-else {
-    let cart = localStorage.getItem('panier'))
-    cart.push(panier)
-    localstorage.setItem('panier', JSON.stringify(cart)) 
-
-}*/
-
-
-
-
-
-
-
-
-
-console.log(cart);
-
-})
-}
-
-
-
-/*
-cart = Array()
-cart.push(panier)    
-if (panier.id == id )
-*/
-
-/*function getPanier () {
-
-    boutonEvent()
-    let cart = Array()
-    cart = JSON.parse(localStorage.getItem('panier'))
-console.log(cart);
-}
-
-function addPanier () {
-
-    let yoyo = getPanier();
-    console.log(yoyo);
-}
-getPanier()
-addPanier()
-
-
-/*
-si (le panier existe) {
-    let panier = {
-        id: id,
-        couleur: color,
-        quantité: quantite,  
+    if (cart == 'null') {
+        return [];
     }
-    si (l'id et la couleur existent) {
-        modifier la quantité
+    else  {
+        return cart = JSON.parse(localStorage.getItem('panier'))
     }
-    sinon {
-        ajouter l'article
-    }
-    cart.push(panier)    
+    
 }
-sinon {
-    créer le panier
+
+
+function addPanier (cart) {
+    let panier = getPanier();
+    if (panier.id )
+    //verifier si l'article existe déjà dans le panier et vérifier s'il est à moins de 100 qty
+    
+    panier.push(cart)
+    localStorage.setItem('panier', JSON.stringify(panier))
 }
-*/
 
-
-//let cart = JSON.parse(localStorage.getItem('panier'))
-//cart = Array()
-//cart.push(panier) 
-//localStorage.setItem( 'panier', JSON.stringify(panier)) 
-
-
-boutonEvent()
+boutonEvent ()
