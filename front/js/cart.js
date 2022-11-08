@@ -48,13 +48,14 @@ function displayCartLine(produit) {
     quantityP.textContent = produit.qty
     contentQuantity.appendChild(quantityP)
 
-    let inputNbr = document.createElement("input")
-    inputNbr.type = "number"
-    inputNbr.className = "itemQuantity"
-    inputNbr.min = "1"
-    inputNbr.max = "100"
-    contentQuantity.appendChild(inputNbr)
-
+    let inputQtn = document.createElement("input")
+    inputQtn.type = "number"
+    inputQtn.className = "itemQuantity"
+    inputQtn.value = produit.qty
+    inputQtn.min = "1"
+    inputQtn.max = "100"
+    contentQuantity.appendChild(inputQtn)
+    inputQtn.addEventListener("input", () => changeQty(produit._id, produit, inputQtn.value))
 
     let contentDelete = document.createElement("div")
     contentDelete.className = "cart__item__content__settings__delete"
@@ -64,15 +65,28 @@ function displayCartLine(produit) {
     deleteItem.className = "deleteItem"
     deleteItem.textContent = "supprimer"
     contentDelete.appendChild(deleteItem)
-
-
+    
 //    let inputQty = document.createElement("input")
     //type text, ajouter la qty en valeur dans le champ
 //    inputQty.addEventListener('change', function () {
         // vérifier qu'on tape pas plus de 100
         //mettre à jour le panier => appel d'une fonction setPanier(avec id, couleur, qty)
 //    })
+
+    
 }
+
+function changeQty(id, produit, newValue) {
+    
+    let itemToUpdate = itemsList.find((produit) => produit.id === id)
+    itemToUpdate.quantite = Number(newValue)
+    console.log(itemsList);
+}
+
+
+
+
+
 
 //function setPanier(id, couleur, qty) {
     //mettre à jour le contenu
@@ -84,7 +98,6 @@ function displayCartLine(produit) {
 
     for (let produit of itemsList) {
     //colorP.textContent = produit.couleur
-    console.log(produit.id)
     //displayCartLine(produit)
     fetch (`http://localhost:3000/api/products/${produit.id}`)
     .then ((response) => response.json())
@@ -93,6 +106,8 @@ function displayCartLine(produit) {
         data['qty'] = produit.quantite
 
         displayCartLine(data)
+        
+
         console.log(data);
     
     })
