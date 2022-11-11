@@ -99,21 +99,19 @@ function addPanier (cart) {
 
     if (foundPanier != undefined) {
        
-        foundPanier.quantite = cart.quantite
-        
+        if ((foundPanier.quantite + cart.quantite) > 100) {
+            alert("quantité supérieur à 100 !! On limite votre nombre de canapés à 100 pour cette couleur");
+            foundPanier.quantite = 100
+        }                
+        else {
+            foundPanier.quantite += cart.quantite
+        }
     }
     else {
-        cart.quantite = cart.quantite
+        //cart.quantite = cart.quantite
         panier.push(cart)
     }
-
-    if (cart.quantite <= 100) {
     localStorage.setItem('panier', JSON.stringify(panier))
-    
-    }
-    else {
-        alert("quantité supérieur à 100 !!");
-    }
 }
 
 boutonEvent ()
