@@ -1,4 +1,5 @@
 
+
 function displayCartLine(produit) {
 
     let section = document.getElementById("cart__items")
@@ -55,17 +56,20 @@ function displayCartLine(produit) {
     inputQtn.min = "1"
     inputQtn.max = "100"
     contentQuantity.appendChild(inputQtn)
-    inputQtn.addEventListener("input", () => changeQty(produit._id, produit, inputQtn.value))
+    inputQtn.addEventListener("input", () => changeQty(produit, inputQtn.value))
 
     let contentDelete = document.createElement("div")
     contentDelete.className = "cart__item__content__settings__delete"
     contentSetting.appendChild(contentDelete)
-
-    let deleteItem = document.createElement("p")
-    deleteItem.className = "deleteItem"
-    deleteItem.textContent = "supprimer"
-    contentDelete.appendChild(deleteItem)
     
+
+
+    let deleteParagraphe = document.createElement("p")
+    deleteParagraphe.className = "deleteItem"
+    deleteParagraphe.textContent = "supprimer"
+    contentDelete.appendChild(deleteParagraphe)
+    deleteParagraphe.addEventListener("click", () => deleteItem(produit))
+
 //    let inputQty = document.createElement("input")
     //type text, ajouter la qty en valeur dans le champ
 //    inputQty.addEventListener('change', function () {
@@ -73,17 +77,51 @@ function displayCartLine(produit) {
         //mettre à jour le panier => appel d'une fonction setPanier(avec id, couleur, qty)
 //    })
 
+function deleteItem (produit) {
     
-}
 
-function changeQty(id, produit, newValue) {
-    
-    let itemToUpdate = itemsList.find((produit) => produit.id === id)
-    itemToUpdate.quantite = Number(newValue)
-    console.log(itemsList);
 }
 
 
+
+
+
+    
+}
+
+function changeQty(produit, newValue) {
+//    console.log(itemsList[1].id)
+//    let itemToUpdate = itemsList.find((item) => item.id === produit._id & item.couleur === produit.couleur)
+    produit.qty = Number(newValue)
+    //console.log(itemToUpdate);
+    setPanier(produit)
+    
+}
+
+function setPanier (productUpdated) {
+    let cart = JSON.parse(localStorage.getItem('panier'))
+    for (let index in cart) {
+        if (cart[index].id == productUpdated._id && cart[index].couleur == productUpdated.couleur) {
+            cart[index].quantite = productUpdated.qty
+        }
+        
+    }
+    // mettre à jour le prix total et la quantité totale
+    
+    localStorage.setItem('panier', JSON.stringify(cart))
+    readPanier()
+//    console.log(oldData);
+
+
+    //newData(produit)
+}
+
+/*function newData (produit) {
+    console.log(produit);
+    //let newItem = JSON.stringify(item)
+    //localStorage.setItem(produit.id, newItem)
+}
+*/
 
 
 
@@ -93,8 +131,11 @@ function changeQty(id, produit, newValue) {
     //lecture du panier => appell d'un fonction
 //}
 
-//function readPanier() {
+function readPanier() {
     let itemsList = JSON.parse(localStorage.getItem('panier'))
+    let prixTotal = 0
+    let section = document.getElementById("cart__items")
+    section.innerHTML = ''
 
     for (let produit of itemsList) {
     //colorP.textContent = produit.couleur
@@ -106,9 +147,10 @@ function changeQty(id, produit, newValue) {
         data['qty'] = produit.quantite
 
         displayCartLine(data)
-        
+        prixTotal += data.qty * data.price
+         
 
-        console.log(data);
+        console.log(prixTotal);
     
     })
         
@@ -118,10 +160,9 @@ function changeQty(id, produit, newValue) {
 
     }
    
-//}
+}
 
-
-
+readPanier()
 
 
 
