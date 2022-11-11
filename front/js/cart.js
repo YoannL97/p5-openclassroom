@@ -68,7 +68,7 @@ function displayCartLine(produit) {
     deleteParagraphe.className = "deleteItem"
     deleteParagraphe.textContent = "supprimer"
     contentDelete.appendChild(deleteParagraphe)
-    deleteParagraphe.addEventListener("click", () => deleteItem(produit))
+    deleteParagraphe.addEventListener("click", () => deleteItem(produit, article))
 
 //    let inputQty = document.createElement("input")
     //type text, ajouter la qty en valeur dans le champ
@@ -77,17 +77,18 @@ function displayCartLine(produit) {
         //mettre à jour le panier => appel d'une fonction setPanier(avec id, couleur, qty)
 //    })
 
-function deleteItem (produit) {
-    
-
-}
-
-
-
-
 
     
 }
+
+function deleteItem (produit, article) {
+
+    article.remove()
+    let key = `${produit._id}-${produit.couleur}`
+    console.log(produit._id);
+    localStorage.removeItem(key)
+}
+
 
 function changeQty(produit, newValue) {
 //    console.log(itemsList[1].id)
@@ -109,6 +110,7 @@ function setPanier (productUpdated) {
     // mettre à jour le prix total et la quantité totale
     
     localStorage.setItem('panier', JSON.stringify(cart))
+    
     readPanier()
 //    console.log(oldData);
 
@@ -136,6 +138,7 @@ function readPanier() {
     let prixTotal = 0
     let section = document.getElementById("cart__items")
     section.innerHTML = ''
+    
 
     for (let produit of itemsList) {
     //colorP.textContent = produit.couleur
@@ -147,10 +150,16 @@ function readPanier() {
         data['qty'] = produit.quantite
 
         displayCartLine(data)
-        prixTotal += data.qty * data.price
-         
 
-        console.log(prixTotal);
+        prixTotal += data.qty * data.price
+        
+        let TotalQuantity = document.getElementById("totalQuantity")
+        TotalQuantity.textContent = itemsList.reduce ((TotalQuantity, produit) => TotalQuantity + produit.quantite, 0);
+        
+
+        let totalPrice = document.getElementById('totalPrice')
+        totalPrice.textContent = prixTotal
+
     
     })
         
