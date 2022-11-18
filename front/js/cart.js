@@ -1,5 +1,4 @@
 
-
 function displayCartLine(produit) {
 
     let section = document.getElementById("cart__items")
@@ -82,11 +81,28 @@ function displayCartLine(produit) {
 }
 
 function deleteItem (produit, article) {
+    
+    
+    //let key = `${produit._id}-${produit.couleur}`
+    
+    let cart = JSON.parse(localStorage.getItem('panier'))
+    for (let index in cart) {
+        console.log(cart[index])
+        console.log(produit)
+        if (cart[index].id == produit._id && cart[index].couleur == produit.couleur) {
+            cart.splice(index, 1)
+        }
+    }
+    
+    console.log(cart);
 
+    //localStorage.removeItem(key)
     article.remove()
-    let key = `${produit._id}-${produit.couleur}`
-    console.log(produit._id);
-    localStorage.removeItem(key)
+    localStorage.setItem('panier', JSON.stringify(cart))
+    
+    
+    
+    
 }
 
 
@@ -104,35 +120,16 @@ function setPanier (productUpdated) {
     for (let index in cart) {
         if (cart[index].id == productUpdated._id && cart[index].couleur == productUpdated.couleur) {
             cart[index].quantite = productUpdated.qty
-        }
         
-    }
-    // mettre à jour le prix total et la quantité totale
+        localStorage.setItem('panier', JSON.stringify(cart))
+    }}
     
-    localStorage.setItem('panier', JSON.stringify(cart))
+    
     
     readPanier()
-//    console.log(oldData);
 
-
-    //newData(produit)
 }
-
-/*function newData (produit) {
-    console.log(produit);
-    //let newItem = JSON.stringify(item)
-    //localStorage.setItem(produit.id, newItem)
-}
-*/
-
-
-
-
-//function setPanier(id, couleur, qty) {
-    //mettre à jour le contenu
-    //lecture du panier => appell d'un fonction
-//}
-
+   
 function readPanier() {
     let itemsList = JSON.parse(localStorage.getItem('panier'))
     let prixTotal = 0
@@ -173,7 +170,104 @@ function readPanier() {
 
 readPanier()
 
+let form = document.querySelector(".cart__order__form")
+form.addEventListener("click", (e) => formulaire(e))
 
+        //'^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 
+        //'g'
+
+function formulaire (e) {
+    e.preventDefault()
+
+    let prenom = document.querySelector("#firstName").value
+    let nom = document.querySelector("#lastName").value
+    let address = document.querySelector("#address").value
+    let ville = document.querySelector("#city").value
+    let mail = document.querySelector("#email").value
+
+    validateFirstName(prenom)
+    validateLastName(nom)
+    validateAddress(address)
+    validateCity(ville)
+    validateEmail(mail)
+}
+    
+    // first name
+
+const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
+const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
+const adresseErrorMsg = document.getElementById("addressErrorMsg");
+const cityErrorMsg = document.getElementById("cityErrorMsg");
+const emailErrorMsg = document.getElementById("emailErrorMsg");
+
+const regexName = /^[a-z][a-z '-.,]{1,31}$|^$/i;
+
+function validateFirstName(prenom) {
+    if (regexName.test(prenom) == false) {
+        firstNameErrorMsg.innerHTML = 'le prénom doit contenir entre 1 et 31 caractères, caractères speciaux acceptés (,-.\')'
+        return false;
+    } else {
+        firstNameErrorMsg.innerHTML = ''
+        return true;
+
+    }
+}
+
+function validateLastName(nom) {
+    if (regexName.test(nom) == false) {
+        lastNameErrorMsg.innerHTML = 'le nom doit contenir entre 1 et 31 caractères, caractères speciaux acceptés (,-.\')'
+        return false;
+    } else {
+        lastNameErrorMsg.innerHTML = '';
+        return true;
+    }
+    }
+    
+function validateAddress(address) {
+    const regexAddress = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/
+
+    if (regexAddress.test(address) == false && address.length > 2) {
+        adresseErrorMsg.innerHTML = 'l\'adresse n\'est pas valide'
+        return false;
+    } else {
+        adresseErrorMsg.innerHTML = '';
+        return true;
+    }
+}
+
+function validateCity(ville) {
+  if (regexName.test(ville) == false) {
+    cityErrorMsg.innerHTML = 'la ville doit contenir entre 1 et 31 caractères, caractères speciaux acceptés (,-.\')'
+    return false;
+  } else {
+    cityErrorMsg.innerHTML = '';
+    return true;
+  }
+}
+
+function validateEmail(mail) {
+
+const regexMail =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  
+if (regexMail.test(mail) == false && mail.length > 2 ) {
+    emailErrorMsg.innerHTML = 'l\'adresse e-mail n\'est pas correct'
+    return false;
+} else {
+    emailErrorMsg.innerHTML = '';
+    return true;
+  }
+}
+    
+/*let contact = {
+        prenom : prenom,
+        nom : nom,
+        address : adresse,
+        ville : ville,
+        mail : mail
+    }
+
+*/
 
 
 
