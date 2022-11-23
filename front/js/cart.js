@@ -170,54 +170,161 @@ function readPanier() {
 
 readPanier()
 
+
+    //  Formulaire  //
+
+
 let form = document.querySelector(".cart__order__form")
-form.addEventListener("click", (e) => formulaire(e))
+let submitBtn = document.getElementById('order')
 
-        //'^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 
-        //'g'
+form.addEventListener('change', () => getContact ())
 
-function formulaire (e) {
-    e.preventDefault()
+function getContact () {
+    
+    let prenom = document.getElementById('firstName').value
+    let nom = document.getElementById("lastName").value
+    let adresse = document.getElementById("address").value
+    let ville = document.getElementById("city").value
+    let email = document.getElementById("email").value
 
-    let prenom = document.querySelector("#firstName").value
-    let nom = document.querySelector("#lastName").value
-    let address = document.querySelector("#address").value
-    let ville = document.querySelector("#city").value
-    let mail = document.querySelector("#email").value
-
-    validateFirstName(prenom)
-    validateLastName(nom)
-    validateAddress(address)
-    validateCity(ville)
-    validateEmail(mail)
+  if (
+    validateFirstName(prenom) &&
+    validateLastName(nom) &&
+    validateAddress(adresse) &&
+    validateCity(ville) &&
+    validateEmail(email)
+  ) {
+    
+    contact = {
+        prenom,
+        nom,
+        adresse,
+        ville,
+        email
+    }
+    console.log(contact);
+  }
 }
     
-    // first name
+submitBtn.addEventListener('click', (e) => postData(e))
+
+function postData (e) {
+    e.preventDefault()
+
+}
 
 const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
 const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
-const adresseErrorMsg = document.getElementById("addressErrorMsg");
+const addressErrorMsg = document.getElementById("addressErrorMsg");
 const cityErrorMsg = document.getElementById("cityErrorMsg");
 const emailErrorMsg = document.getElementById("emailErrorMsg");
 
 const regexName = /^[a-z][a-z '-.,]{1,31}$|^$/i;
 
-function validateFirstName(prenom) {
-    if (regexName.test(prenom) == false) {
-        firstNameErrorMsg.innerHTML = 'le prénom doit contenir entre 1 et 31 caractères, caractères speciaux acceptés (,-.\')'
-        return false;
+ function validateFirstName (inputPrenom) {
+
+    if (regexName.test(inputPrenom)) {
+        firstNameErrorMsg.innerHTML = ''; 
+        return true
+        
     } else {
-        firstNameErrorMsg.innerHTML = ''
-        return true;
-
+       
+        firstNameErrorMsg.innerHTML =  'Le prénom doit contenir entre 1 et 31 caractères, caractères speciaux acceptés (,-.\')';
+        return false
     }
-}
+ }
 
+const validateLastName = function(inputLastName) {
+    
+    if (regexName.test(inputLastName)) {
+        lastNameErrorMsg.innerHTML = '';
+        return true
+    } else {
+        lastNameErrorMsg.innerHTML = 'le nom doit contenir entre 1 et 31 caractères, caractères speciaux acceptés (,-.\')';
+        return false
+    }
+};
+
+const validateAddress = function(inputAddress) {
+
+    const regexAddress = /^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+/
+
+    if (regexAddress.test(inputAddress)) {
+        addressErrorMsg.innerHTML = '';
+       return true
+    } else if (inputAddress < 2 ) {
+        
+        addressErrorMsg.innerHTML = '';
+        return false
+    }
+    else {
+        addressErrorMsg.innerHTML = 'l\'adresse n\'est pas valide';
+        return false
+    }
+};
+
+const validateCity = function(inputCity) {
+
+    if (regexName.test(inputCity)) {
+        cityErrorMsg.innerHTML = '';
+        return true
+    } else {
+        cityErrorMsg.innerHTML = 'la ville doit contenir entre 1 et 31 caractères, caractères speciaux acceptés (,-.\')';
+        return false
+    }
+};
+
+const validateEmail = function(inputEmail) {
+
+    const regexMail =
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    if (regexMail.test(inputEmail)) {
+
+        emailErrorMsg.innerHTML = '';
+        return true
+    }
+    else if (inputEmail < 2 ) {
+        emailErrorMsg.innerHTML = '';
+        return false
+    }
+    else {
+        emailErrorMsg.innerHTML = 'l\'adresse e-mail n\'est pas correct';
+        return false
+    }
+};
+
+/*
+function postFormulaire (e) {
+    e.preventDefault()
+    let submit = document.getElementById("order")
+    submit.addEventListener('click,  ')
+
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 function validateLastName(nom) {
     if (regexName.test(nom) == false) {
+        console.log(nom.value);
         lastNameErrorMsg.innerHTML = 'le nom doit contenir entre 1 et 31 caractères, caractères speciaux acceptés (,-.\')'
         return false;
     } else {
+        console.log(nom.value);
         lastNameErrorMsg.innerHTML = '';
         return true;
     }
@@ -258,7 +365,7 @@ if (regexMail.test(mail) == false && mail.length > 2 ) {
     return true;
   }
 }
-    
+
 /*let contact = {
         prenom : prenom,
         nom : nom,
