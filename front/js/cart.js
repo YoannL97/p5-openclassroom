@@ -174,42 +174,70 @@ readPanier()
     //  Formulaire  //
 
 
+
 let form = document.querySelector(".cart__order__form")
 let submitBtn = document.getElementById('order')
+
 
 form.addEventListener('change', () => getContact ())
 
 function getContact () {
     
-    let prenom = document.getElementById('firstName').value
-    let nom = document.getElementById("lastName").value
-    let adresse = document.getElementById("address").value
-    let ville = document.getElementById("city").value
+    let firstName = document.getElementById('firstName').value
+    let lastName = document.getElementById("lastName").value
+    let address = document.getElementById("address").value
+    let city = document.getElementById("city").value
     let email = document.getElementById("email").value
 
   if (
-    validateFirstName(prenom) &&
-    validateLastName(nom) &&
-    validateAddress(adresse) &&
-    validateCity(ville) &&
+    validateFirstName(firstName) &&
+    validateLastName(lastName) &&
+    validateAddress(address) &&
+    validateCity(city) &&
     validateEmail(email)
   ) {
     
-    contact = {
-        prenom,
-        nom,
-        adresse,
-        ville,
+    let contact = {
+        firstName,
+        lastName,
+        address,
+        city,
         email
     }
-    console.log(contact);
+    submitBtn.addEventListener('click', (e) => postData(e))
+    submitBtn.contact = contact
+
   }
+
 }
     
-submitBtn.addEventListener('click', (e) => postData(e))
 
 function postData (e) {
     e.preventDefault()
+    let contact = e.currentTarget.contact
+    let cart = JSON.parse(localStorage.getItem('panier'));
+    
+    let products = [];
+    for (let elem of cart) {
+        products.push(elem.id)
+    }
+    let body = {contact, products};
+    console.log(body);
+
+    fetch("http://localhost:3000/api/products/order", {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    
+  })
+    .then ((res) => res.json()) 
+    .then((order) => {
+      localStorage.clear();
+      id = order.orderId;
+      window.location.href = `confirmation.html?id=${id}`;
+    });
 
 }
 
