@@ -87,7 +87,15 @@ function deleteItem (produit, article) {
 
 function changeQty(produit, newValue) {
     produit.qty = Number(newValue)
-    setPanier(produit)
+    if (produit.qty <= 0){
+        alert('quantité non valide')
+        produit.qty = 1
+        setPanier(produit)
+    }
+    else {
+        setPanier(produit)
+    }
+    
     
 }
 
@@ -182,6 +190,11 @@ function postData (e) {
     e.preventDefault()
     let contact = e.currentTarget.contact
     let cart = JSON.parse(localStorage.getItem('panier'));
+    if (cart.length <= 0) {
+        alert("Votre panier est vide")
+    }
+    else {
+
     
     let products = [];
     for (let elem of cart) {
@@ -205,7 +218,7 @@ function postData (e) {
       window.location.href = `confirmation.html?id=${id}`;
     });
 
-}
+}}
 
 const firstNameErrorMsg = document.getElementById("firstNameErrorMsg");
 const lastNameErrorMsg = document.getElementById("lastNameErrorMsg");
@@ -246,7 +259,7 @@ const validateAddress = function(inputAddress) {
     if (regexAddress.test(inputAddress)) {
         addressErrorMsg.innerHTML = '';
        return true
-    } else if (inputAddress < 2 ) {
+    } else if (inputAddress < 1 ) {
         
         addressErrorMsg.innerHTML = '';
         return false

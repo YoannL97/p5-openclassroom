@@ -64,7 +64,7 @@ function boutonEvent() {
 
 
 
-        if (color === "" || color == "null" | quantite == 0 | quantite == null) {
+        if (color === "" || color == "null" | quantite <= 0 | quantite == null) {
             alert ("veuillez choisir une couleur et une quantité")
         }
         else {
